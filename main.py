@@ -1,19 +1,36 @@
-from typing import Dict
+from typing import Dict, List
+import sys
 
 def main():
     book_path: str = "books/frankenstein.txt"
-    text: str = get_book_text(book_path)
-    num_words: str = get_num_words(text)
-    print(f"{num_words} words found in the document")
+    try:
+        text: str = get_book_text(book_path)
+        num_words: int = get_num_words(text)
+        char_counts: Dict[str, int] = get_char_count(text)
+
+        print(f"{num_words} words found in the document")
+        print("\nCharacter counts:")
+        for character, count in sorted(char_counts.items()):
+            if character.isalpha():
+                print(f"The '{character}' character appears {count} times")
+    except RuntimeError as e:
+        print(f"Error: {e}")
+        sys.exit(1)
 
 def get_char_count(text: str) -> Dict[str, int]:
-    # initialise a dict to store char counts
-    # loop over each char in the text
-    # convert text to lowercase
-    # update dict entries as appropriate
-    pass
+    if not text:
+        return {}
+
+    char_counts: Dict[str, int] = {}
+    normalised_text: str = text.lower()
+
+    for character in normalised_text:
+        char_counts[character] = char_counts.get(character, 0) + 1
+    return char_counts 
 
 def get_num_words(text: str) -> int:
+    if not text:
+        return 0
     words: List[str] = text.split()
     return len(words)
 
@@ -23,7 +40,7 @@ def get_book_text(path: str) -> str:
         with open(path) as file:
             return file.read()
     except OSError as e:
-        print(f"An error was raised when looking for the specified book: {e}")
-        return "An error has occured. Failed to get book."
+        raise RuntimeError(f"Failed to read book at {path}: {e}")
 
-main()
+if __name__ == "__main__":
+    main()
