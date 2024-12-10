@@ -7,12 +7,13 @@ def main():
         text: str = get_book_text(book_path)
         num_words: int = get_num_words(text)
         char_counts: Dict[str, int] = get_char_count(text)
-
+        print(f"--- Begin report of {book_path} ---")
         print(f"{num_words} words found in the document")
         print("\nCharacter counts:")
         for character, count in sorted(char_counts.items()):
             if character.isalpha():
                 print(f"The '{character}' character appears {count} times")
+        print(f"--- End report ---")
     except RuntimeError as e:
         print(f"Error: {e}")
         sys.exit(1)
