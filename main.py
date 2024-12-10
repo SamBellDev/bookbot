@@ -2,7 +2,7 @@ from typing import Dict, List
 import sys
 
 def main():
-    book_path: str = "books/frankenstein.txt"
+    book_path: str = input("Please enter the complete path to the book file: ") 
     try:
         text: str = get_book_text(book_path)
         num_words: int = get_num_words(text)
